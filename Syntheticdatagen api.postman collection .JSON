@@ -1,0 +1,910 @@
+{
+  "info": {
+    "name": "Synthetic Data Generation API — v3.0",
+    "description": "Synthetic Data Generation API — v3.0\n\n## Security\n- The Groq API key is configured **server-side only** via the `GROQ_API_KEY` env var.\n  It is never sent in any request body.\n- The `X-API-Key` header is optional. Enable it only if `API_SECRET_KEY` is set on the server.\n\n## Quick Start\n1. Start server: `python auto_pipeline.py --serve`\n2. Set `base_url` collection variable to `http://localhost:8000`\n3. Run **Health Check** — confirm `key_configured: true`\n4. Run **Save Connection** — register your DB under a name\n5. Run **Test Connection** — confirm DB is reachable\n6. Run **Run Pipeline (Async)** — job_id is saved automatically\n7. Run **Get Job Status** — poll until `status: completed`\n8. Run **Query Table** — browse generated data with pagination\n\n## New in v3\n- Data Viewer: paginated table browser with sort/filter\n- SQL Editor: execute DML/DDL/SELECT with dialect auto-detection\n- Import CSV: append or replace table data from a CSV file\n- Export: download data as DML INSERT statements, CSV, or DDL\n- Connection Manager: save and switch between multiple DB connections",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "3.0.0"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "job_id",
+      "value": "",
+      "type": "string",
+      "description": "Auto-populated by Run Pipeline (Async) test script"
+    },
+    {
+      "key": "connection_name",
+      "value": "DatagenDB",
+      "type": "string",
+      "description": "Name of the saved connection to use for data viewer / SQL editor"
+    },
+    {
+      "key": "api_secret_key",
+      "value": "",
+      "type": "string",
+      "description": "Set this only if the server has API_SECRET_KEY configured. Leave blank for local dev."
+    }
+  ],
+  "item": [
+    {
+      "name": "System",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "health"]
+            },
+            "description": "Check API health, version info, and whether the Groq API key is configured on the server.\n\nExpected response:\n```json\n{\n  \"status\": \"healthy\",\n  \"version\": \"2.1.0\",\n  \"key_configured\": true,\n  \"supported_engines\": [\"postgres\", \"oracle\", \"sqlserver\", \"mysql\"]\n}\n```"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Connection Manager",
+      "description": "Save, list, and delete named database connections.\nConnections are stored server-side and referenced by name in all Data Viewer, SQL Editor, Import, and Export requests.\n\nWorkflow:\n1. POST /data/connections — save a connection (tests it first)\n2. GET  /data/connections — list all saved connections\n3. DELETE /data/connections/{name} — remove a connection",
+      "item": [
+        {
+          "name": "List Connections",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/connections",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "connections"]
+            },
+            "description": "List all saved database connections. Passwords are never returned.\n\nExpected response:\n```json\n{\n  \"connections\": [\n    {\n      \"name\": \"DatagenDB\",\n      \"engine\": \"postgres\",\n      \"host\": \"localhost\",\n      \"dbname\": \"DatagenDB\",\n      \"schema\": \"banking\",\n      \"_has_password\": true\n    }\n  ]\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Save Connection — PostgreSQL",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var response = pm.response.json();",
+                  "if (response.success && response.connection) {",
+                  "  pm.collectionVariables.set('connection_name', response.connection.name);",
+                  "  console.log('Connection saved:', response.connection.name);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"DatagenDB\",\n  \"database\": {\n    \"engine\": \"postgres\",\n    \"host\": \"localhost\",\n    \"port\": 5432,\n    \"dbname\": \"DatagenDB\",\n    \"user\": \"postgres\",\n    \"password\": \"yourpassword\",\n    \"schema\": \"banking\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/connections",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "connections"]
+            },
+            "description": "Save a named PostgreSQL connection. The server tests connectivity before saving.\nThe connection name is auto-saved to the `connection_name` collection variable.\n\nExpected response:\n```json\n{\n  \"success\": true,\n  \"connection\": {\n    \"name\": \"DatagenDB\",\n    \"engine\": \"postgres\",\n    \"host\": \"localhost\"\n  }\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Save Connection — Oracle",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"OracleDB\",\n  \"database\": {\n    \"engine\": \"oracle\",\n    \"host\": \"localhost\",\n    \"port\": 1521,\n    \"service_name\": \"ORCL\",\n    \"dbname\": \"ORCL\",\n    \"user\": \"banking_user\",\n    \"password\": \"yourpassword\",\n    \"schema\": \"BANKING\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/connections",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "connections"]
+            },
+            "description": "Save a named Oracle connection."
+          },
+          "response": []
+        },
+        {
+          "name": "Save Connection — SQL Server",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"SQLServerDB\",\n  \"database\": {\n    \"engine\": \"sqlserver\",\n    \"host\": \"localhost\",\n    \"port\": 1433,\n    \"dbname\": \"DatagenDB\",\n    \"user\": \"sa\",\n    \"password\": \"yourpassword\",\n    \"schema\": \"dbo\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/connections",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "connections"]
+            },
+            "description": "Save a named SQL Server connection."
+          },
+          "response": []
+        },
+        {
+          "name": "Save Connection — MySQL",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"MySQLDB\",\n  \"database\": {\n    \"engine\": \"mysql\",\n    \"host\": \"localhost\",\n    \"port\": 3306,\n    \"dbname\": \"DatagenDB\",\n    \"user\": \"root\",\n    \"password\": \"yourpassword\",\n    \"schema\": \"DatagenDB\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/connections",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "connections"]
+            },
+            "description": "Save a named MySQL connection."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Connection",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/connections/{{connection_name}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "connections", "{{connection_name}}"]
+            },
+            "description": "Remove a saved connection by name.\n\nExpected response:\n```json\n{\"success\": true, \"deleted\": \"DatagenDB\"}\n```"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Schema",
+      "description": "Test connectivity and read schema metadata without generating data.",
+      "item": [
+        {
+          "name": "Test Connection — PostgreSQL",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"database\": {\n    \"engine\": \"postgres\",\n    \"host\": \"localhost\",\n    \"port\": 5432,\n    \"dbname\": \"DatagenDB\",\n    \"user\": \"postgres\",\n    \"password\": \"yourpassword\",\n    \"schema\": \"banking\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/schema/test-connection",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "schema", "test-connection"]
+            },
+            "description": "Test PostgreSQL connection without saving it."
+          },
+          "response": []
+        },
+        {
+          "name": "Test Connection — Oracle",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"database\": {\n    \"engine\": \"oracle\",\n    \"host\": \"localhost\",\n    \"port\": 1521,\n    \"service_name\": \"ORCL\",\n    \"dbname\": \"ORCL\",\n    \"user\": \"system\",\n    \"password\": \"yourpassword\",\n    \"schema\": \"BANKING\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/schema/test-connection",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "schema", "test-connection"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Test Connection — SQL Server",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"database\": {\n    \"engine\": \"sqlserver\",\n    \"host\": \"localhost\",\n    \"port\": 1433,\n    \"dbname\": \"DatagenDB\",\n    \"user\": \"sa\",\n    \"password\": \"yourpassword\",\n    \"schema\": \"dbo\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/schema/test-connection",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "schema", "test-connection"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Test Connection — MySQL",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"database\": {\n    \"engine\": \"mysql\",\n    \"host\": \"localhost\",\n    \"port\": 3306,\n    \"dbname\": \"DatagenDB\",\n    \"user\": \"root\",\n    \"password\": \"yourpassword\",\n    \"schema\": \"DatagenDB\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/schema/test-connection",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "schema", "test-connection"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Read Schema",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"database\": {\n    \"engine\": \"postgres\",\n    \"host\": \"localhost\",\n    \"port\": 5432,\n    \"dbname\": \"DatagenDB\",\n    \"user\": \"postgres\",\n    \"password\": \"yourpassword\",\n    \"schema\": \"banking\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/schema/read",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "schema", "read"]
+            },
+            "description": "Read schema metadata (tables, columns, PKs, FKs) without generating data."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Data Viewer",
+      "description": "Browse and query table data after generation.\nAll endpoints require a `connection_name` that was previously saved via POST /data/connections.\n\nTypical workflow:\n1. GET  /data/tables         — list tables in schema\n2. GET  /data/preview/{tbl}  — quick 100-row preview\n3. POST /data/query          — paginated view with sort + filter\n4. POST /data/count          — get row count",
+      "item": [
+        {
+          "name": "List Tables",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/tables?connection_name={{connection_name}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "tables"],
+              "query": [
+                {
+                  "key": "connection_name",
+                  "value": "{{connection_name}}",
+                  "description": "Name of a previously saved connection"
+                }
+              ]
+            },
+            "description": "List all tables in the schema for a saved connection.\nReturns table names, column counts, and primary key columns.\n\nExpected response:\n```json\n{\n  \"connection\": \"DatagenDB\",\n  \"schema\": \"banking\",\n  \"engine\": \"postgres\",\n  \"tables\": [\n    {\"name\": \"tstg_customer\", \"column_count\": 12, \"primary_keys\": [\"CUSTOMER_NO\"]},\n    {\"name\": \"tstg_account\",  \"column_count\": 18, \"primary_keys\": [\"ACCOUNT_NO\"]}\n  ]\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Preview Table (first 100 rows)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/preview/tstg_aa_accountdetail?connection_name={{connection_name}}&limit=100",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "preview", "tstg_aa_accountdetail"],
+              "query": [
+                {
+                  "key": "connection_name",
+                  "value": "{{connection_name}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Number of rows to return (max 1000)"
+                }
+              ]
+            },
+            "description": "Quick preview — returns the first N rows of a table without pagination.\nUsed by the UI to show data immediately after selecting a table.\n\nExpected response:\n```json\n{\n  \"table\": \"tstg_aa_accountdetail\",\n  \"columns\": [\"ARRANGEMENT_ID\", \"VALUE_DATE\", \"START_DATE\", ...],\n  \"rows\": [[\"AA2406A0001\", \"2024-11-17\", \"2024-11-17\", ...]]\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Query Table (paginated)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connection_name\": \"{{connection_name}}\",\n  \"table\": \"tstg_aa_accountdetail\",\n  \"page\": 1,\n  \"page_size\": 100,\n  \"order_by\": \"ARRANGEMENT_ID\",\n  \"order_dir\": \"ASC\",\n  \"filters\": {}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/query",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "query"]
+            },
+            "description": "Paginated, sortable, filterable table data viewer.\n\nRequest fields:\n- `connection_name`: saved connection name\n- `table`: table name\n- `page`: page number (1-based)\n- `page_size`: rows per page (max 1000)\n- `order_by`: column name to sort by (optional)\n- `order_dir`: ASC or DESC\n- `filters`: {\"column_name\": \"value\"} for equality filters (optional)\n\nExpected response:\n```json\n{\n  \"connection\": \"DatagenDB\",\n  \"table\": \"tstg_aa_accountdetail\",\n  \"columns\": [\"ARRANGEMENT_ID\", \"VALUE_DATE\", ...],\n  \"column_meta\": {\n    \"ARRANGEMENT_ID\": {\"data_type\": \"varchar\", \"is_pk\": true, \"is_nullable\": false}\n  },\n  \"rows\": [[\"AA2406A0001\", \"2024-11-17\", ...]],\n  \"page\": 1,\n  \"page_size\": 100,\n  \"total\": 300,\n  \"total_pages\": 3,\n  \"engine\": \"postgres\"\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Query Table (with filter)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connection_name\": \"{{connection_name}}\",\n  \"table\": \"tstg_aa_accountdetail\",\n  \"page\": 1,\n  \"page_size\": 50,\n  \"order_by\": \"VALUE_DATE\",\n  \"order_dir\": \"DESC\",\n  \"filters\": {\n    \"CURRENCY\": \"USD\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/query",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "query"]
+            },
+            "description": "Example query with a filter applied — returns only rows where CURRENCY = 'USD', sorted by VALUE_DATE descending."
+          },
+          "response": []
+        },
+        {
+          "name": "Count Rows",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connection_name\": \"{{connection_name}}\",\n  \"table\": \"tstg_aa_accountdetail\",\n  \"filters\": {}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/count",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "count"]
+            },
+            "description": "Return the row count for a table with optional filter.\n\nExpected response:\n```json\n{\"table\": \"tstg_aa_accountdetail\", \"count\": 300}\n```"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "SQL Editor",
+      "description": "Execute SQL directly against a saved connection.\nThe dialect endpoint tells the UI which language mode to use in the code editor (Monaco/CodeMirror).\n\nDialect values returned:\n  postgres   → pgsql\n  oracle     → plsql\n  sqlserver  → tsql\n  mysql      → mysql\n\nWorkflow:\n1. GET  /sql/dialect  — configure editor language mode\n2. POST /sql/execute  — run a query, DML, or DDL\n3. GET  /sql/history  — see previous statements",
+      "item": [
+        {
+          "name": "Get SQL Dialect (for editor config)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/sql/dialect?connection_name={{connection_name}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "sql", "dialect"],
+              "query": [
+                {
+                  "key": "connection_name",
+                  "value": "{{connection_name}}",
+                  "description": "Name of a previously saved connection"
+                }
+              ]
+            },
+            "description": "Returns SQL dialect info for a saved connection.\nThe frontend uses this to set the Monaco / CodeMirror editor language mode automatically.\n\nExpected response:\n```json\n{\n  \"dialect\":     \"pgsql\",\n  \"label\":       \"PostgreSQL\",\n  \"placeholder\": \"%s\",\n  \"engine\":      \"postgres\",\n  \"schema\":      \"banking\"\n}\n```\n\nDialect values:\n- postgres   → `pgsql`\n- oracle     → `plsql`\n- sqlserver  → `tsql`\n- mysql      → `mysql`"
+          },
+          "response": []
+        },
+        {
+          "name": "Execute SELECT",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connection_name\": \"{{connection_name}}\",\n  \"sql\": \"SELECT * FROM \\\"banking\\\".\\\"tstg_aa_accountdetail\\\" LIMIT 50\",\n  \"max_rows\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/sql/execute",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "sql", "execute"]
+            },
+            "description": "Execute any SELECT statement. Returns columns + rows as JSON.\nErrors are returned in the response body (not as HTTP 500) so the SQL editor can display them inline.\n\nExpected response:\n```json\n{\n  \"columns\": [\"ARRANGEMENT_ID\", \"VALUE_DATE\", ...],\n  \"rows\": [[\"AA2406A0001\", \"2024-11-17\", ...]],\n  \"row_count\": 50,\n  \"statement_type\": \"SELECT\",\n  \"truncated\": false,\n  \"execution_ms\": 24.5,\n  \"dialect\": {\"dialect\": \"pgsql\", \"label\": \"PostgreSQL\"},\n  \"error\": null\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Execute SELECT — Oracle",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connection_name\": \"OracleDB\",\n  \"sql\": \"SELECT * FROM \\\"BANKING\\\".\\\"TSTG_AA_ACCOUNTDETAIL\\\" WHERE ROWNUM <= 50\",\n  \"max_rows\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/sql/execute",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "sql", "execute"]
+            },
+            "description": "Execute a SELECT against Oracle. Note the Oracle-style ROWNUM pagination and uppercase table names."
+          },
+          "response": []
+        },
+        {
+          "name": "Execute SELECT — SQL Server",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connection_name\": \"SQLServerDB\",\n  \"sql\": \"SELECT TOP 50 * FROM [dbo].[tstg_aa_accountdetail]\",\n  \"max_rows\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/sql/execute",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "sql", "execute"]
+            },
+            "description": "Execute a SELECT against SQL Server. Note the T-SQL TOP syntax and bracket quoting."
+          },
+          "response": []
+        },
+        {
+          "name": "Execute SELECT — MySQL",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connection_name\": \"MySQLDB\",\n  \"sql\": \"SELECT * FROM `DatagenDB`.`tstg_aa_accountdetail` LIMIT 50\",\n  \"max_rows\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/sql/execute",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "sql", "execute"]
+            },
+            "description": "Execute a SELECT against MySQL. Note the backtick quoting."
+          },
+          "response": []
+        },
+        {
+          "name": "Execute DML (INSERT / UPDATE / DELETE)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connection_name\": \"{{connection_name}}\",\n  \"sql\": \"UPDATE \\\"banking\\\".\\\"tstg_aa_accountdetail\\\" SET \\\"RENEWAL_DATE\\\" = '2026-01-01' WHERE \\\"ARRANGEMENT_ID\\\" = 'AA2406A0001'\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/sql/execute",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "sql", "execute"]
+            },
+            "description": "Execute an UPDATE, INSERT, or DELETE statement.\n\nExpected response:\n```json\n{\n  \"columns\": [],\n  \"rows\": [],\n  \"row_count\": 1,\n  \"statement_type\": \"DML\",\n  \"execution_ms\": 12.1,\n  \"error\": null\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Execute DDL (CREATE / ALTER / DROP)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connection_name\": \"{{connection_name}}\",\n  \"sql\": \"CREATE INDEX idx_arrangement_currency ON \\\"banking\\\".\\\"tstg_aa_accountdetail\\\" (\\\"CURRENCY\\\")\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/sql/ddl",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "sql", "ddl"]
+            },
+            "description": "Execute a DDL statement (CREATE, ALTER, DROP, TRUNCATE).\nThis is a separate endpoint from /execute so the UI can show a confirmation dialog before calling it.\n\nExpected response:\n```json\n{\"columns\": [], \"rows\": [], \"row_count\": 0, \"statement_type\": \"DDL\", \"error\": null}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Explain Query",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connection_name\": \"{{connection_name}}\",\n  \"sql\": \"SELECT * FROM \\\"banking\\\".\\\"tstg_aa_accountdetail\\\" WHERE \\\"CURRENCY\\\" = 'USD'\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/sql/explain",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "sql", "explain"]
+            },
+            "description": "Return the query execution plan.\nEngine-aware:\n- PostgreSQL → EXPLAIN ANALYZE\n- Oracle     → EXPLAIN PLAN FOR\n- MySQL      → EXPLAIN\n- SQL Server → Returns guidance to use SET SHOWPLAN_TEXT ON in the editor\n\nExpected response:\n```json\n{\n  \"explain_rows\": [[\"Seq Scan on tstg_aa_accountdetail (cost=0.00..8.50 rows=1)\"]],\n  \"columns\": [\"QUERY PLAN\"],\n  \"error\": null\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Validate SQL (syntax check)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connection_name\": \"{{connection_name}}\",\n  \"sql\": \"SELECT * FRUM \\\"banking\\\".\\\"tstg_aa_accountdetail\\\"\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/sql/validate",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "sql", "validate"]
+            },
+            "description": "Validate SQL syntax without executing or modifying any data.\nRuns EXPLAIN only — safe to call on every keystroke with debounce.\n\nExpected response (invalid SQL):\n```json\n{\n  \"valid\": false,\n  \"error\": \"syntax error at or near \\\"FRUM\\\"\"\n}\n```\n\nExpected response (valid SQL):\n```json\n{\"valid\": true, \"error\": null}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Query History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/sql/history?connection_name={{connection_name}}&limit=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "sql", "history"],
+              "query": [
+                {"key": "connection_name", "value": "{{connection_name}}"},
+                {"key": "limit", "value": "20", "description": "Number of recent queries to return"}
+              ]
+            },
+            "description": "Return the last N SQL statements executed for a connection (in-memory, resets on server restart).\n\nExpected response:\n```json\n{\n  \"connection\": \"DatagenDB\",\n  \"history\": [\n    {\n      \"sql\": \"SELECT * FROM ...\",\n      \"executed_at\": \"2026-04-20T14:24:05\",\n      \"statement_type\": \"SELECT\",\n      \"row_count\": 50,\n      \"error\": null\n    }\n  ]\n}\n```"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Import CSV",
+      "description": "Import pre-existing CSV data into a table.\n\nWorkflow:\n1. POST /data/import/preview — upload CSV, get column mapping + 10-row preview\n2. Review the suggested column mapping in the UI\n3. POST /data/import/commit — send the parsed rows with mode: append or replace\n\nmode values:\n  append  → INSERT rows into existing data (errors on PK conflict)\n  replace → TRUNCATE table first, then INSERT (safe re-run)",
+      "item": [
+        {
+          "name": "Import Preview (upload CSV)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": [],
+                  "description": "Select your CSV file here"
+                },
+                {
+                  "key": "connection_name",
+                  "value": "{{connection_name}}",
+                  "type": "text"
+                },
+                {
+                  "key": "table",
+                  "value": "tstg_aa_accountdetail",
+                  "type": "text",
+                  "description": "Target table name in the DB"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/import/preview",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "import", "preview"]
+            },
+            "description": "Upload a CSV file and get:\n- First 10 rows as preview\n- Column names detected in the CSV\n- Column names in the target DB table\n- Auto-suggested CSV→DB column mapping (case-insensitive match)\n\nExpected response:\n```json\n{\n  \"file_name\": \"my_data.csv\",\n  \"csv_columns\": [\"ARRANGEMENT_ID\", \"VALUE_DATE\", \"CURRENCY\"],\n  \"db_columns\": [\"ARRANGEMENT_ID\", \"VALUE_DATE\", \"START_DATE\", \"CURRENCY\", ...],\n  \"suggested_mapping\": {\n    \"ARRANGEMENT_ID\": \"ARRANGEMENT_ID\",\n    \"VALUE_DATE\": \"VALUE_DATE\",\n    \"CURRENCY\": \"CURRENCY\"\n  },\n  \"preview_rows\": [{\"ARRANGEMENT_ID\": \"AA001\", \"VALUE_DATE\": \"2024-01-01\", ...}],\n  \"connection\": \"DatagenDB\",\n  \"table\": \"tstg_aa_accountdetail\"\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Import Commit — Append",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connection_name\": \"{{connection_name}}\",\n  \"table\": \"tstg_aa_accountdetail\",\n  \"mode\": \"append\",\n  \"columns\": [\"ARRANGEMENT_ID\", \"VALUE_DATE\", \"START_DATE\", \"CURRENCY\"],\n  \"rows\": [\n    {\"ARRANGEMENT_ID\": \"AA9901X0001\", \"VALUE_DATE\": \"2026-01-15\", \"START_DATE\": \"2026-01-15\", \"CURRENCY\": \"USD\"},\n    {\"ARRANGEMENT_ID\": \"AA9901X0002\", \"VALUE_DATE\": \"2026-01-16\", \"START_DATE\": \"2026-01-16\", \"CURRENCY\": \"EUR\"}\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/import/commit",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "import", "commit"]
+            },
+            "description": "Insert rows into the target table (append mode — keeps existing data).\nRows should be the parsed CSV rows from the /import/preview step, with the column mapping applied.\n\nExpected response:\n```json\n{\n  \"success\": true,\n  \"table\": \"tstg_aa_accountdetail\",\n  \"mode\": \"append\",\n  \"rows_imported\": 2\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Import Commit — Replace",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connection_name\": \"{{connection_name}}\",\n  \"table\": \"tstg_aa_accountdetail\",\n  \"mode\": \"replace\",\n  \"columns\": [\"ARRANGEMENT_ID\", \"VALUE_DATE\", \"START_DATE\", \"CURRENCY\"],\n  \"rows\": [\n    {\"ARRANGEMENT_ID\": \"AA9901X0001\", \"VALUE_DATE\": \"2026-01-15\", \"START_DATE\": \"2026-01-15\", \"CURRENCY\": \"USD\"},\n    {\"ARRANGEMENT_ID\": \"AA9901X0002\", \"VALUE_DATE\": \"2026-01-16\", \"START_DATE\": \"2026-01-16\", \"CURRENCY\": \"EUR\"}\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/import/commit",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "import", "commit"]
+            },
+            "description": "TRUNCATE the target table first, then insert rows (replace mode — wipes existing data).\nSafe to re-run multiple times without duplicate key errors.\n\nExpected response:\n```json\n{\n  \"success\": true,\n  \"table\": \"tstg_aa_accountdetail\",\n  \"mode\": \"replace\",\n  \"rows_imported\": 2\n}\n```"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Export",
+      "description": "Export table data in various formats after generation.\n\nFormat options:\n  dml → INSERT INTO statements (engine-aware quoting)\n  csv → standard CSV\n  ddl → CREATE TABLE statement (reconstructed from live schema)\n\nAll export endpoints return plain text (not JSON) for easy copy-paste or download.\nApply filters to export a subset of the data.",
+      "item": [
+        {
+          "name": "Export as DML (INSERT statements)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connection_name\": \"{{connection_name}}\",\n  \"table\": \"tstg_aa_accountdetail\",\n  \"format\": \"dml\",\n  \"limit\": 100,\n  \"filters\": {}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/export/dml",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "export", "dml"]
+            },
+            "description": "Export table rows as INSERT INTO statements (plain text response).\nQuoting is engine-aware:\n  PostgreSQL  → \"schema\".\"table\"\n  Oracle      → \"SCHEMA\".\"TABLE\"\n  SQL Server  → [schema].[table]\n  MySQL       → `schema`.`table`\n\nExpected response (plain text):\n```sql\n-- DML export: tstg_aa_accountdetail  (100 rows)\n\nINSERT INTO \"banking\".\"tstg_aa_accountdetail\" (\"ARRANGEMENT_ID\", \"VALUE_DATE\", ...) VALUES ('AA2406A0001', '2024-11-17', ...);\nINSERT INTO \"banking\".\"tstg_aa_accountdetail\" (\"ARRANGEMENT_ID\", \"VALUE_DATE\", ...) VALUES ('AA2408B0002', '2023-04-16', ...);\n...\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Export as DML (with filter)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connection_name\": \"{{connection_name}}\",\n  \"table\": \"tstg_aa_accountdetail\",\n  \"format\": \"dml\",\n  \"limit\": 500,\n  \"filters\": {\n    \"CURRENCY\": \"USD\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/export/dml",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "export", "dml"]
+            },
+            "description": "Export only rows matching the filter as INSERT statements. Useful for exporting a subset of generated data."
+          },
+          "response": []
+        },
+        {
+          "name": "Export as CSV",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connection_name\": \"{{connection_name}}\",\n  \"table\": \"tstg_aa_accountdetail\",\n  \"format\": \"csv\",\n  \"limit\": 10000,\n  \"filters\": {}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/export/csv",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "export", "csv"]
+            },
+            "description": "Export table data as CSV plain text.\n\nExpected response (plain text):\n```\nARRANGEMENT_ID,VALUE_DATE,START_DATE,DRAWDOWN_END_DATE,...\nAA2406A0001,2024-11-17,2024-11-17,2024-11-17,...\nAA2408B0002,2023-04-16,2023-04-16,2023-04-16,...\n...\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Export as DDL (CREATE TABLE)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connection_name\": \"{{connection_name}}\",\n  \"table\": \"tstg_aa_accountdetail\",\n  \"format\": \"ddl\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/data/export/ddl",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "data", "export", "ddl"]
+            },
+            "description": "Reconstruct and return the CREATE TABLE DDL for a table (plain text).\nUseful for understanding the schema or recreating the table in another environment.\n\nExpected response (plain text):\n```sql\nCREATE TABLE \"banking\".\"tstg_aa_accountdetail\" (\n  \"ARRANGEMENT_ID\" VARCHAR NOT NULL PRIMARY KEY,\n  \"VALUE_DATE\" DATE,\n  \"START_DATE\" DATE,\n  \"DRAWDOWN_END_DATE\" DATE,\n  ...\n);\n```"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pipeline",
+      "description": "Run the full synthetic data generation pipeline.\nUse /run-async for large datasets — it returns a job_id immediately.\nPoll /jobs/{job_id} to check progress.",
+      "item": [
+        {
+          "name": "Run Pipeline — Synchronous (PostgreSQL)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"database\": {\n    \"engine\": \"postgres\",\n    \"host\": \"localhost\",\n    \"port\": 5432,\n    \"dbname\": \"DatagenDB\",\n    \"user\": \"postgres\",\n    \"password\": \"yourpassword\",\n    \"schema\": \"banking\"\n  },\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"batch_size\": 10000,\n  \"null_probability\": 0.05,\n  \"seed\": 42,\n  \"dry_run\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/pipeline/run",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "pipeline", "run"]
+            },
+            "description": "Run full pipeline synchronously. Waits for completion.\nUse /run-async for large datasets."
+          },
+          "response": []
+        },
+        {
+          "name": "Run Pipeline — Async (returns job_id)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var response = pm.response.json();",
+                  "if (response.job_id) {",
+                  "  pm.collectionVariables.set('job_id', response.job_id);",
+                  "  console.log('Job ID saved:', response.job_id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"database\": {\n    \"engine\": \"postgres\",\n    \"host\": \"localhost\",\n    \"port\": 5432,\n    \"dbname\": \"DatagenDB\",\n    \"user\": \"postgres\",\n    \"password\": \"yourpassword\",\n    \"schema\": \"banking\"\n  },\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"batch_size\": 10000,\n  \"null_probability\": 0.05,\n  \"seed\": 42,\n  \"dry_run\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/pipeline/run-async",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "pipeline", "run-async"]
+            },
+            "description": "Start pipeline in background. Returns job_id immediately.\nAuto-saves job_id to collection variable for polling."
+          },
+          "response": []
+        },
+        {
+          "name": "Run Pipeline — Oracle",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"database\": {\n    \"engine\": \"oracle\",\n    \"host\": \"localhost\",\n    \"port\": 1521,\n    \"service_name\": \"ORCL\",\n    \"dbname\": \"ORCL\",\n    \"user\": \"banking_user\",\n    \"password\": \"yourpassword\",\n    \"schema\": \"BANKING\"\n  },\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"batch_size\": 5000,\n  \"seed\": 42,\n  \"dry_run\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/pipeline/run-async",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "pipeline", "run-async"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Run Pipeline — SQL Server",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"database\": {\n    \"engine\": \"sqlserver\",\n    \"host\": \"localhost\",\n    \"port\": 1433,\n    \"dbname\": \"DatagenDB\",\n    \"user\": \"sa\",\n    \"password\": \"yourpassword\",\n    \"schema\": \"dbo\"\n  },\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"batch_size\": 10000,\n  \"seed\": 42,\n  \"dry_run\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/pipeline/run-async",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "pipeline", "run-async"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Run Pipeline — MySQL",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"database\": {\n    \"engine\": \"mysql\",\n    \"host\": \"localhost\",\n    \"port\": 3306,\n    \"dbname\": \"DatagenDB\",\n    \"user\": \"root\",\n    \"password\": \"yourpassword\",\n    \"schema\": \"DatagenDB\"\n  },\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"batch_size\": 10000,\n  \"seed\": 42,\n  \"dry_run\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/pipeline/run-async",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "pipeline", "run-async"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Jobs",
+      "description": "Track and manage pipeline jobs.",
+      "item": [
+        {
+          "name": "Get Job Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/jobs/{{job_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "jobs", "{{job_id}}"]
+            },
+            "description": "Poll this endpoint after starting an async pipeline run.\nStatus values: queued → running → completed | failed | cancelled"
+          },
+          "response": []
+        },
+        {
+          "name": "List All Jobs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/jobs",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "jobs"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel Job",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/jobs/{{job_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "jobs", "{{job_id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Scenarios",
+      "description": "List and run auto-generated business scenarios.\nScenarios are created automatically when the pipeline first runs.",
+      "item": [
+        {
+          "name": "List Scenarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/scenarios",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "scenarios"]
+            },
+            "description": "List all available business scenarios from scenarios.yaml.\nRun a pipeline first to auto-generate scenarios."
+          },
+          "response": []
+        },
+        {
+          "name": "Run Scenario",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"database\": {\n    \"engine\": \"postgres\",\n    \"host\": \"localhost\",\n    \"port\": 5432,\n    \"dbname\": \"DatagenDB\",\n    \"user\": \"postgres\",\n    \"password\": \"yourpassword\",\n    \"schema\": \"banking\"\n  },\n  \"scenario_name\": \"stress_test\",\n  \"dry_run\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/scenarios/run",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "scenarios", "run"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

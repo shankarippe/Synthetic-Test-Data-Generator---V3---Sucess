@@ -1,0 +1,359 @@
+2026-04-21 08:42:17,504 | INFO | Dependency graph built: 52 nodes, 74 edges
+2026-04-21 08:42:17,568 | INFO | Domain loaded: 'core_banking' from domains.yaml
+2026-04-21 08:42:17,729 | INFO | DB tables are empty — using heuristic ratios.
+2026-04-21 08:42:17,729 | DEBUG | Root tables: ['tstg_aa_product', 'tstg_ac_charge_request', 'tstg_ac_locked_events', 'tstg_company', 'tstg_eb_queries_answers', 'tstg_por_supplementary_info', 'tstg_por_transaction_and_confirmation', 'tstg_re_stat_line_cont_details']
+2026-04-21 08:42:17,732 | INFO | Generation order determined: 52 tables
+2026-04-21 08:42:17,732 | WARNING |   Root table 'tstg_aa_product' not in anchor_entities and DB is empty — defaulting to 50 rows.
+2026-04-21 08:42:17,732 | WARNING |   Root table 'tstg_ac_charge_request' not in anchor_entities and DB is empty — defaulting to 50 rows.
+2026-04-21 08:42:17,733 | WARNING |   Root table 'tstg_ac_locked_events' not in anchor_entities and DB is empty — defaulting to 50 rows.
+2026-04-21 08:42:17,733 | WARNING |   Root table 'tstg_company' not in anchor_entities and DB is empty — defaulting to 50 rows.
+2026-04-21 08:42:17,733 | WARNING |   Root table 'tstg_eb_queries_answers' not in anchor_entities and DB is empty — defaulting to 50 rows.
+2026-04-21 08:42:17,733 | WARNING |   Root table 'tstg_por_supplementary_info' not in anchor_entities and DB is empty — defaulting to 50 rows.
+2026-04-21 08:42:17,733 | WARNING |   Root table 'tstg_por_transaction_and_confirmation' not in anchor_entities and DB is empty — defaulting to 50 rows.
+2026-04-21 08:42:17,733 | WARNING |   Root table 'tstg_re_stat_line_cont_details' not in anchor_entities and DB is empty — defaulting to 50 rows.
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_aa_product_details': heuristic ratio 1 × parent 'tstg_aa_product'(50) = 50  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_ac_charge_request_details': heuristic ratio 1 × parent 'tstg_ac_charge_request'(50) = 50  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_ac_locked_events_details': heuristic ratio 1 × parent 'tstg_ac_locked_events'(50) = 50  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_category': heuristic ratio 6 × parent 'tstg_company'(50) = 300  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_company_details': heuristic ratio 1 × parent 'tstg_company'(50) = 50  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_currency': heuristic ratio 10 × parent 'tstg_company'(50) = 500  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_dates': heuristic ratio 5 × parent 'tstg_company'(50) = 250  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_dept_acct_officer': heuristic ratio 5 × parent 'tstg_company'(50) = 250  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_industry': heuristic ratio 10 × parent 'tstg_company'(50) = 500  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_pp_messagetype': heuristic ratio 5 × parent 'tstg_company'(50) = 250  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_pp_statuscode': heuristic ratio 5 × parent 'tstg_company'(50) = 250  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_ppt_receivedbulkdetails': heuristic ratio 5 × parent 'tstg_company'(50) = 250  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_sector': heuristic ratio 8 × parent 'tstg_company'(50) = 400  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_transaction': heuristic ratio 15 × parent 'tstg_company'(50) = 750  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_eb_queries_answers_details': heuristic ratio 1 × parent 'tstg_eb_queries_answers'(50) = 50  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_por_supplementary_info_details': heuristic ratio 1 × parent 'tstg_por_supplementary_info'(50) = 50  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_por_transaction_and_confirmation_details': heuristic ratio 1 × parent 'tstg_por_transaction_and_confirmation'(50) = 50  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_aa_arr_account': heuristic ratio 3 × parent 'tstg_currency'(500) = 1500  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_country': heuristic ratio 20 × parent 'tstg_company'(50) = 1000  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_currency_details': heuristic ratio 1 × parent 'tstg_currency'(500) = 500  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_pp_messagetype_details': heuristic ratio 1 × parent 'tstg_pp_messagetype'(250) = 250  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_por_transaction': heuristic ratio 15 × parent 'tstg_pp_messagetype'(250) = 3750  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_pp_statuscode_details': heuristic ratio 1 × parent 'tstg_pp_statuscode'(250) = 250  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_ppt_receivedbulkdetails_details': heuristic ratio 1 × parent 'tstg_ppt_receivedbulkdetails'(250) = 250  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_aa_arr_account_details': heuristic ratio 1 × parent 'tstg_aa_arr_account'(1500) = 1500  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_account': heuristic ratio 3 × parent 'tstg_category'(300) = 900  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_collateral': heuristic ratio 1 × parent 'tstg_company'(50) = 50  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_customer': heuristic ratio 50 × parent 'tstg_dept_acct_officer'(250) = 12500  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_pp_order_entry': heuristic ratio 10 × parent 'tstg_por_transaction'(3750) = 37500  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_account_details': heuristic ratio 1 × parent 'tstg_account'(900) = 900  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_aa_arrangement': heuristic ratio 3 × parent 'tstg_company'(50) = 150  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_atm_transaction': heuristic ratio 15 × parent 'tstg_customer'(12500) = 187500  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_customer_details': heuristic ratio 1 × parent 'tstg_customer'(12500) = 12500  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_eb_contract_balances': heuristic ratio 2 × parent 'tstg_collateral'(50) = 100  [AUTO]
+2026-04-21 08:42:17,733 | DEBUG |   Child 'tstg_stmt_entry': heuristic ratio 20 × parent 'tstg_account'(900) = 18000  [AUTO]
+2026-04-21 08:42:17,734 | DEBUG |   Child 'tstg_pp_order_entry_details': heuristic ratio 1 × parent 'tstg_pp_order_entry'(37500) = 37500  [AUTO]
+2026-04-21 08:42:17,734 | DEBUG |   Child 'tstg_aa_accountdetail': heuristic ratio 3 × parent 'tstg_aa_arrangement'(150) = 450  [AUTO]
+2026-04-21 08:42:17,734 | DEBUG |   Child 'tstg_aa_arrangement_activity': heuristic ratio 8 × parent 'tstg_aa_arrangement'(150) = 1200  [AUTO]
+2026-04-21 08:42:17,734 | DEBUG |   Child 'tstg_aa_arrangement_details': heuristic ratio 1 × parent 'tstg_aa_arrangement'(150) = 150  [AUTO]
+2026-04-21 08:42:17,734 | DEBUG |   Child 'tstg_atm_transaction_details': heuristic ratio 1 × parent 'tstg_atm_transaction'(187500) = 187500  [AUTO]
+2026-04-21 08:42:17,734 | DEBUG |   Child 'tstg_eb_contract_balances_details': heuristic ratio 1 × parent 'tstg_eb_contract_balances'(100) = 100  [AUTO]
+2026-04-21 08:42:17,734 | DEBUG |   Child 'tstg_stmt_entry_details': heuristic ratio 1 × parent 'tstg_stmt_entry'(18000) = 18000  [AUTO]
+2026-04-21 08:42:17,734 | DEBUG |   Child 'tstg_aa_accountdetail_details': heuristic ratio 1 × parent 'tstg_aa_accountdetail'(450) = 450  [AUTO]
+2026-04-21 08:42:17,734 | DEBUG |   Child 'tstg_aa_arrangement_activity_details': heuristic ratio 1 × parent 'tstg_aa_arrangement_activity'(1200) = 1200  [AUTO]
+2026-04-21 08:42:17,734 | INFO | Generation order determined: 52 tables
+2026-04-21 08:42:17,734 | INFO | Volume plan: 52 tables, 530100 total rows (52 auto-inferred).
+2026-04-21 08:42:17,748 | INFO | SeedManager: profile='default' global_seed=42 run_id=20260421_084217
+2026-04-21 08:42:17,748 | INFO | Generation order determined: 52 tables
+2026-04-21 08:42:18,175 | DEBUG | DataGenerator: table='tstg_aa_product' seed=1298262829 (profile=default)
+2026-04-21 08:42:18,195 | DEBUG |   tstg_aa_product: 50 / 50 rows generated
+2026-04-21 08:42:18,196 | INFO | CSV written: output\tstg_aa_product.csv  (50 rows, 0.01 MB)
+2026-04-21 08:42:18,197 | DEBUG | DataGenerator: table='tstg_ac_charge_request' seed=2013986974 (profile=default)
+2026-04-21 08:42:18,227 | DEBUG |   tstg_ac_charge_request: 50 / 50 rows generated
+2026-04-21 08:42:18,227 | INFO | CSV written: output\tstg_ac_charge_request.csv  (50 rows, 0.03 MB)
+2026-04-21 08:42:18,231 | DEBUG | DataGenerator: table='tstg_ac_locked_events' seed=1735824474 (profile=default)
+2026-04-21 08:42:18,243 | DEBUG |   tstg_ac_locked_events: 50 / 50 rows generated
+2026-04-21 08:42:18,243 | INFO | CSV written: output\tstg_ac_locked_events.csv  (50 rows, 0.01 MB)
+2026-04-21 08:42:18,243 | DEBUG | DataGenerator: table='tstg_company' seed=652513315 (profile=default)
+2026-04-21 08:42:18,260 | DEBUG |   tstg_company: 50 / 50 rows generated
+2026-04-21 08:42:18,263 | INFO | CSV written: output\tstg_company.csv  (50 rows, 0.01 MB)
+2026-04-21 08:42:18,264 | DEBUG | DataGenerator: table='tstg_eb_queries_answers' seed=1161532387 (profile=default)
+2026-04-21 08:42:18,384 | DEBUG |   tstg_eb_queries_answers: 50 / 50 rows generated
+2026-04-21 08:42:18,384 | INFO | CSV written: output\tstg_eb_queries_answers.csv  (50 rows, 0.09 MB)
+2026-04-21 08:42:18,384 | DEBUG | DataGenerator: table='tstg_por_supplementary_info' seed=1748449978 (profile=default)
+2026-04-21 08:42:18,474 | DEBUG |   tstg_por_supplementary_info: 50 / 50 rows generated
+2026-04-21 08:42:18,474 | INFO | CSV written: output\tstg_por_supplementary_info.csv  (50 rows, 0.07 MB)
+2026-04-21 08:42:18,483 | DEBUG | DataGenerator: table='tstg_por_transaction_and_confirmation' seed=823577325 (profile=default)
+2026-04-21 08:42:18,489 | DEBUG |   tstg_por_transaction_and_confirmation: 50 / 50 rows generated
+2026-04-21 08:42:18,489 | INFO | CSV written: output\tstg_por_transaction_and_confirmation.csv  (50 rows, 0.00 MB)
+2026-04-21 08:42:18,489 | DEBUG | DataGenerator: table='tstg_re_stat_line_cont_details' seed=238688999 (profile=default)
+2026-04-21 08:42:18,506 | DEBUG |   tstg_re_stat_line_cont_details: 50 / 50 rows generated
+2026-04-21 08:42:18,506 | INFO | CSV written: output\tstg_re_stat_line_cont_details.csv  (50 rows, 0.01 MB)
+2026-04-21 08:42:18,506 | DEBUG | DataGenerator: table='tstg_aa_product_details' seed=1215531763 (profile=default)
+2026-04-21 08:42:18,522 | DEBUG |   tstg_aa_product_details: 50 / 50 rows generated
+2026-04-21 08:42:18,523 | INFO | CSV written: output\tstg_aa_product_details.csv  (50 rows, 0.01 MB)
+2026-04-21 08:42:18,523 | DEBUG | DataGenerator: table='tstg_ac_charge_request_details' seed=1984787122 (profile=default)
+2026-04-21 08:42:18,548 | DEBUG |   tstg_ac_charge_request_details: 50 / 50 rows generated
+2026-04-21 08:42:18,551 | INFO | CSV written: output\tstg_ac_charge_request_details.csv  (50 rows, 0.01 MB)
+2026-04-21 08:42:18,553 | DEBUG | DataGenerator: table='tstg_ac_locked_events_details' seed=1085475454 (profile=default)
+2026-04-21 08:42:18,565 | DEBUG |   tstg_ac_locked_events_details: 50 / 50 rows generated
+2026-04-21 08:42:18,567 | INFO | CSV written: output\tstg_ac_locked_events_details.csv  (50 rows, 0.00 MB)
+2026-04-21 08:42:18,568 | DEBUG | DataGenerator: table='tstg_category' seed=914661953 (profile=default)
+2026-04-21 08:42:18,586 | DEBUG |   tstg_category: 300 / 300 rows generated
+2026-04-21 08:42:18,587 | INFO | CSV written: output\tstg_category.csv  (300 rows, 0.02 MB)
+2026-04-21 08:42:18,588 | DEBUG | DataGenerator: table='tstg_company_details' seed=139159312 (profile=default)
+2026-04-21 08:42:18,605 | DEBUG |   tstg_company_details: 50 / 50 rows generated
+2026-04-21 08:42:18,606 | INFO | CSV written: output\tstg_company_details.csv  (50 rows, 0.01 MB)
+2026-04-21 08:42:18,606 | DEBUG | DataGenerator: table='tstg_currency' seed=1037102965 (profile=default)
+2026-04-21 08:42:18,702 | DEBUG |   tstg_currency: 500 / 500 rows generated
+2026-04-21 08:42:18,717 | INFO | CSV written: output\tstg_currency.csv  (500 rows, 0.07 MB)
+2026-04-21 08:42:18,718 | DEBUG | DataGenerator: table='tstg_dates' seed=1836573549 (profile=default)
+2026-04-21 08:42:18,770 | DEBUG |   tstg_dates: 250 / 250 rows generated
+2026-04-21 08:42:18,770 | INFO | CSV written: output\tstg_dates.csv  (250 rows, 0.03 MB)
+2026-04-21 08:42:18,770 | DEBUG | DataGenerator: table='tstg_dept_acct_officer' seed=1733982745 (profile=default)
+2026-04-21 08:42:18,816 | DEBUG |   tstg_dept_acct_officer: 250 / 250 rows generated
+2026-04-21 08:42:18,820 | INFO | CSV written: output\tstg_dept_acct_officer.csv  (250 rows, 0.02 MB)
+2026-04-21 08:42:18,820 | DEBUG | DataGenerator: table='tstg_industry' seed=975272890 (profile=default)
+2026-04-21 08:42:18,865 | DEBUG |   tstg_industry: 500 / 500 rows generated
+2026-04-21 08:42:18,871 | INFO | CSV written: output\tstg_industry.csv  (500 rows, 0.05 MB)
+2026-04-21 08:42:18,871 | DEBUG | DataGenerator: table='tstg_pp_messagetype' seed=373353271 (profile=default)
+2026-04-21 08:42:18,932 | DEBUG |   tstg_pp_messagetype: 250 / 250 rows generated
+2026-04-21 08:42:18,932 | INFO | CSV written: output\tstg_pp_messagetype.csv  (250 rows, 0.06 MB)
+2026-04-21 08:42:18,944 | DEBUG | DataGenerator: table='tstg_pp_statuscode' seed=669082413 (profile=default)
+2026-04-21 08:42:19,001 | DEBUG |   tstg_pp_statuscode: 250 / 250 rows generated
+2026-04-21 08:42:19,004 | INFO | CSV written: output\tstg_pp_statuscode.csv  (250 rows, 0.04 MB)
+2026-04-21 08:42:19,008 | DEBUG | DataGenerator: table='tstg_ppt_receivedbulkdetails' seed=2048659592 (profile=default)
+2026-04-21 08:42:19,485 | DEBUG |   tstg_ppt_receivedbulkdetails: 250 / 250 rows generated
+2026-04-21 08:42:19,485 | INFO | CSV written: output\tstg_ppt_receivedbulkdetails.csv  (250 rows, 0.26 MB)
+2026-04-21 08:42:19,497 | DEBUG | DataGenerator: table='tstg_sector' seed=87721655 (profile=default)
+2026-04-21 08:42:19,654 | DEBUG |   tstg_sector: 400 / 400 rows generated
+2026-04-21 08:42:19,656 | INFO | CSV written: output\tstg_sector.csv  (400 rows, 0.03 MB)
+2026-04-21 08:42:19,658 | DEBUG | DataGenerator: table='tstg_transaction' seed=1782785822 (profile=default)
+2026-04-21 08:42:19,934 | DEBUG |   tstg_transaction: 750 / 750 rows generated
+2026-04-21 08:42:19,936 | INFO | CSV written: output\tstg_transaction.csv  (750 rows, 0.18 MB)
+2026-04-21 08:42:19,942 | DEBUG | DataGenerator: table='tstg_eb_queries_answers_details' seed=164448779 (profile=default)
+2026-04-21 08:42:20,014 | DEBUG |   tstg_eb_queries_answers_details: 50 / 50 rows generated
+2026-04-21 08:42:20,016 | INFO | CSV written: output\tstg_eb_queries_answers_details.csv  (50 rows, 0.06 MB)
+2026-04-21 08:42:20,017 | DEBUG | DataGenerator: table='tstg_por_supplementary_info_details' seed=1168524143 (profile=default)
+2026-04-21 08:42:20,053 | DEBUG |   tstg_por_supplementary_info_details: 50 / 50 rows generated
+2026-04-21 08:42:20,054 | INFO | CSV written: output\tstg_por_supplementary_info_details.csv  (50 rows, 0.02 MB)
+2026-04-21 08:42:20,057 | DEBUG | DataGenerator: table='tstg_por_transaction_and_confirmation_details' seed=1361439668 (profile=default)
+2026-04-21 08:42:20,188 | DEBUG |   tstg_por_transaction_and_confirmation_details: 50 / 50 rows generated
+2026-04-21 08:42:20,194 | INFO | CSV written: output\tstg_por_transaction_and_confirmation_details.csv  (50 rows, 0.08 MB)
+2026-04-21 08:42:20,196 | DEBUG | DataGenerator: table='tstg_aa_arr_account' seed=488951456 (profile=default)
+2026-04-21 08:42:21,957 | DEBUG |   tstg_aa_arr_account: 1000 / 1500 rows generated
+2026-04-21 08:42:22,638 | DEBUG |   tstg_aa_arr_account: 1500 / 1500 rows generated
+2026-04-21 08:42:22,653 | INFO | CSV written: output\tstg_aa_arr_account.csv  (1500 rows, 1.36 MB)
+2026-04-21 08:42:22,655 | DEBUG | DataGenerator: table='tstg_country' seed=369146000 (profile=default)
+2026-04-21 08:42:22,981 | DEBUG |   tstg_country: 1000 / 1000 rows generated
+2026-04-21 08:42:22,990 | INFO | CSV written: output\tstg_country.csv  (1000 rows, 0.18 MB)
+2026-04-21 08:42:22,990 | DEBUG | DataGenerator: table='tstg_currency_details' seed=1078284508 (profile=default)
+2026-04-21 08:42:23,339 | DEBUG |   tstg_currency_details: 500 / 500 rows generated
+2026-04-21 08:42:23,345 | INFO | CSV written: output\tstg_currency_details.csv  (500 rows, 0.14 MB)
+2026-04-21 08:42:23,348 | DEBUG | DataGenerator: table='tstg_pp_messagetype_details' seed=1786026634 (profile=default)
+2026-04-21 08:42:23,384 | DEBUG |   tstg_pp_messagetype_details: 250 / 250 rows generated
+2026-04-21 08:42:23,390 | INFO | CSV written: output\tstg_pp_messagetype_details.csv  (250 rows, 0.02 MB)
+2026-04-21 08:42:23,391 | DEBUG | DataGenerator: table='tstg_por_transaction' seed=549034667 (profile=default)
+2026-04-21 08:42:26,595 | DEBUG |   tstg_por_transaction: 1000 / 3750 rows generated
+2026-04-21 08:42:29,367 | DEBUG |   tstg_por_transaction: 2000 / 3750 rows generated
+2026-04-21 08:42:32,949 | DEBUG |   tstg_por_transaction: 3000 / 3750 rows generated
+2026-04-21 08:42:36,065 | DEBUG |   tstg_por_transaction: 3750 / 3750 rows generated
+2026-04-21 08:42:36,109 | INFO | CSV written: output\tstg_por_transaction.csv  (3750 rows, 7.30 MB)
+2026-04-21 08:42:36,111 | DEBUG | DataGenerator: table='tstg_pp_statuscode_details' seed=1336170783 (profile=default)
+2026-04-21 08:42:36,136 | DEBUG |   tstg_pp_statuscode_details: 250 / 250 rows generated
+2026-04-21 08:42:36,149 | INFO | CSV written: output\tstg_pp_statuscode_details.csv  (250 rows, 0.02 MB)
+2026-04-21 08:42:36,150 | DEBUG | DataGenerator: table='tstg_ppt_receivedbulkdetails_details' seed=952368384 (profile=default)
+2026-04-21 08:42:36,184 | DEBUG |   tstg_ppt_receivedbulkdetails_details: 250 / 250 rows generated
+2026-04-21 08:42:36,186 | INFO | CSV written: output\tstg_ppt_receivedbulkdetails_details.csv  (250 rows, 0.02 MB)
+2026-04-21 08:42:36,187 | DEBUG | DataGenerator: table='tstg_aa_arr_account_details' seed=1062579358 (profile=default)
+2026-04-21 08:42:37,419 | DEBUG |   tstg_aa_arr_account_details: 1000 / 1500 rows generated
+2026-04-21 08:42:38,189 | DEBUG |   tstg_aa_arr_account_details: 1500 / 1500 rows generated
+2026-04-21 08:42:38,211 | INFO | CSV written: output\tstg_aa_arr_account_details.csv  (1500 rows, 1.71 MB)
+2026-04-21 08:42:38,215 | DEBUG | DataGenerator: table='tstg_account' seed=87931183 (profile=default)
+2026-04-21 08:42:38,815 | DEBUG |   tstg_account: 900 / 900 rows generated
+2026-04-21 08:42:38,851 | INFO | CSV written: output\tstg_account.csv  (900 rows, 0.36 MB)
+2026-04-21 08:42:38,855 | DEBUG | DataGenerator: table='tstg_collateral' seed=1361962285 (profile=default)
+2026-04-21 08:42:38,947 | DEBUG |   tstg_collateral: 50 / 50 rows generated
+2026-04-21 08:42:38,952 | INFO | CSV written: output\tstg_collateral.csv  (50 rows, 0.04 MB)
+2026-04-21 08:42:38,954 | DEBUG | DataGenerator: table='tstg_customer' seed=578093627 (profile=default)
+2026-04-21 08:42:41,555 | DEBUG |   tstg_customer: 1000 / 12500 rows generated
+2026-04-21 08:42:43,814 | DEBUG |   tstg_customer: 2000 / 12500 rows generated
+2026-04-21 08:42:46,545 | DEBUG |   tstg_customer: 3000 / 12500 rows generated
+2026-04-21 08:42:49,437 | DEBUG |   tstg_customer: 4000 / 12500 rows generated
+2026-04-21 08:42:51,856 | DEBUG |   tstg_customer: 5000 / 12500 rows generated
+2026-04-21 08:42:54,130 | DEBUG |   tstg_customer: 6000 / 12500 rows generated
+2026-04-21 08:42:56,249 | DEBUG |   tstg_customer: 7000 / 12500 rows generated
+2026-04-21 08:42:58,287 | DEBUG |   tstg_customer: 8000 / 12500 rows generated
+2026-04-21 08:43:00,239 | DEBUG |   tstg_customer: 9000 / 12500 rows generated
+2026-04-21 08:43:02,154 | DEBUG |   tstg_customer: 10000 / 12500 rows generated
+2026-04-21 08:43:04,097 | DEBUG |   tstg_customer: 11000 / 12500 rows generated
+2026-04-21 08:43:06,120 | DEBUG |   tstg_customer: 12000 / 12500 rows generated
+2026-04-21 08:43:07,166 | DEBUG |   tstg_customer: 12500 / 12500 rows generated
+2026-04-21 08:43:07,197 | INFO | CSV written: output\tstg_customer.csv  (12500 rows, 21.44 MB)
+2026-04-21 08:43:07,203 | DEBUG | DataGenerator: table='tstg_pp_order_entry' seed=612133474 (profile=default)
+2026-04-21 08:43:12,166 | DEBUG |   tstg_pp_order_entry: 1000 / 37500 rows generated
+2026-04-21 08:43:17,799 | DEBUG |   tstg_pp_order_entry: 2000 / 37500 rows generated
+2026-04-21 08:43:22,340 | DEBUG |   tstg_pp_order_entry: 3000 / 37500 rows generated
+2026-04-21 08:43:26,783 | DEBUG |   tstg_pp_order_entry: 4000 / 37500 rows generated
+2026-04-21 08:43:31,195 | DEBUG |   tstg_pp_order_entry: 5000 / 37500 rows generated
+2026-04-21 08:43:35,563 | DEBUG |   tstg_pp_order_entry: 6000 / 37500 rows generated
+2026-04-21 08:43:39,967 | DEBUG |   tstg_pp_order_entry: 7000 / 37500 rows generated
+2026-04-21 08:43:44,439 | DEBUG |   tstg_pp_order_entry: 8000 / 37500 rows generated
+2026-04-21 08:43:49,789 | DEBUG |   tstg_pp_order_entry: 9000 / 37500 rows generated
+2026-04-21 08:43:54,221 | DEBUG |   tstg_pp_order_entry: 10000 / 37500 rows generated
+2026-04-21 08:43:58,903 | DEBUG |   tstg_pp_order_entry: 11000 / 37500 rows generated
+2026-04-21 08:44:03,404 | DEBUG |   tstg_pp_order_entry: 12000 / 37500 rows generated
+2026-04-21 08:44:08,120 | DEBUG |   tstg_pp_order_entry: 13000 / 37500 rows generated
+2026-04-21 08:44:13,365 | DEBUG |   tstg_pp_order_entry: 14000 / 37500 rows generated
+2026-04-21 08:44:17,734 | DEBUG |   tstg_pp_order_entry: 15000 / 37500 rows generated
+2026-04-21 08:44:22,153 | DEBUG |   tstg_pp_order_entry: 16000 / 37500 rows generated
+2026-04-21 08:44:26,476 | DEBUG |   tstg_pp_order_entry: 17000 / 37500 rows generated
+2026-04-21 08:44:30,865 | DEBUG |   tstg_pp_order_entry: 18000 / 37500 rows generated
+2026-04-21 08:44:35,283 | DEBUG |   tstg_pp_order_entry: 19000 / 37500 rows generated
+2026-04-21 08:44:39,721 | DEBUG |   tstg_pp_order_entry: 20000 / 37500 rows generated
+2026-04-21 08:44:44,081 | DEBUG |   tstg_pp_order_entry: 21000 / 37500 rows generated
+2026-04-21 08:44:48,507 | DEBUG |   tstg_pp_order_entry: 22000 / 37500 rows generated
+2026-04-21 08:44:58,984 | DEBUG |   tstg_pp_order_entry: 23000 / 37500 rows generated
+2026-04-21 08:45:12,975 | DEBUG |   tstg_pp_order_entry: 24000 / 37500 rows generated
+2026-04-21 08:45:26,508 | DEBUG |   tstg_pp_order_entry: 25000 / 37500 rows generated
+2026-04-21 08:45:40,341 | DEBUG |   tstg_pp_order_entry: 26000 / 37500 rows generated
+2026-04-21 08:45:54,407 | DEBUG |   tstg_pp_order_entry: 27000 / 37500 rows generated
+2026-04-21 08:46:08,741 | DEBUG |   tstg_pp_order_entry: 28000 / 37500 rows generated
+2026-04-21 08:46:23,220 | DEBUG |   tstg_pp_order_entry: 29000 / 37500 rows generated
+2026-04-21 08:46:37,903 | DEBUG |   tstg_pp_order_entry: 30000 / 37500 rows generated
+2026-04-21 08:46:52,952 | DEBUG |   tstg_pp_order_entry: 31000 / 37500 rows generated
+2026-04-21 08:47:07,672 | DEBUG |   tstg_pp_order_entry: 32000 / 37500 rows generated
+2026-04-21 08:47:22,509 | DEBUG |   tstg_pp_order_entry: 33000 / 37500 rows generated
+2026-04-21 08:47:37,234 | DEBUG |   tstg_pp_order_entry: 34000 / 37500 rows generated
+2026-04-21 08:47:52,167 | DEBUG |   tstg_pp_order_entry: 35000 / 37500 rows generated
+2026-04-21 08:48:06,434 | DEBUG |   tstg_pp_order_entry: 36000 / 37500 rows generated
+2026-04-21 08:48:20,666 | DEBUG |   tstg_pp_order_entry: 37000 / 37500 rows generated
+2026-04-21 08:48:27,948 | DEBUG |   tstg_pp_order_entry: 37500 / 37500 rows generated
+2026-04-21 08:48:28,049 | INFO | CSV written: output\tstg_pp_order_entry.csv  (37500 rows, 83.93 MB)
+2026-04-21 08:48:28,049 | DEBUG | DataGenerator: table='tstg_account_details' seed=1939882208 (profile=default)
+2026-04-21 08:48:30,903 | DEBUG |   tstg_account_details: 900 / 900 rows generated
+2026-04-21 08:48:30,958 | INFO | CSV written: output\tstg_account_details.csv  (900 rows, 0.61 MB)
+2026-04-21 08:48:30,961 | DEBUG | DataGenerator: table='tstg_aa_arrangement' seed=2026781622 (profile=default)
+2026-04-21 08:48:31,364 | DEBUG |   tstg_aa_arrangement: 150 / 150 rows generated
+2026-04-21 08:48:31,366 | INFO | CSV written: output\tstg_aa_arrangement.csv  (150 rows, 0.12 MB)
+2026-04-21 08:48:31,366 | INFO | Parallel generation: tstg_atm_transaction | 187500 rows | 188 chunks | 4 workers
+2026-04-21 08:49:42,852 | INFO | Parallel generation complete: tstg_atm_transaction | 187500 rows written across 188 chunks
+2026-04-21 08:49:50,880 | INFO | Merged CSV: output\tstg_atm_transaction.csv (118.34 MB)
+2026-04-21 08:49:55,349 | DEBUG | Registered 187500 PK values for tstg_atm_transaction.atm_txn_id
+2026-04-21 08:49:55,763 | DEBUG | DataGenerator: table='tstg_customer_details' seed=1604687460 (profile=default)
+2026-04-21 08:50:01,483 | DEBUG |   tstg_customer_details: 1000 / 12500 rows generated
+2026-04-21 08:50:07,296 | DEBUG |   tstg_customer_details: 2000 / 12500 rows generated
+2026-04-21 08:50:13,012 | DEBUG |   tstg_customer_details: 3000 / 12500 rows generated
+2026-04-21 08:50:18,682 | DEBUG |   tstg_customer_details: 4000 / 12500 rows generated
+2026-04-21 08:50:24,395 | DEBUG |   tstg_customer_details: 5000 / 12500 rows generated
+2026-04-21 08:50:30,128 | DEBUG |   tstg_customer_details: 6000 / 12500 rows generated
+2026-04-21 08:50:35,796 | DEBUG |   tstg_customer_details: 7000 / 12500 rows generated
+2026-04-21 08:50:41,045 | DEBUG |   tstg_customer_details: 8000 / 12500 rows generated
+2026-04-21 08:50:46,728 | DEBUG |   tstg_customer_details: 9000 / 12500 rows generated
+2026-04-21 08:50:52,411 | DEBUG |   tstg_customer_details: 10000 / 12500 rows generated
+2026-04-21 08:50:57,997 | DEBUG |   tstg_customer_details: 11000 / 12500 rows generated
+2026-04-21 08:51:03,779 | DEBUG |   tstg_customer_details: 12000 / 12500 rows generated
+2026-04-21 08:51:06,650 | DEBUG |   tstg_customer_details: 12500 / 12500 rows generated
+2026-04-21 08:51:06,710 | INFO | CSV written: output\tstg_customer_details.csv  (12500 rows, 16.50 MB)
+2026-04-21 08:51:06,710 | DEBUG | DataGenerator: table='tstg_eb_contract_balances' seed=177834289 (profile=default)
+2026-04-21 08:51:07,010 | DEBUG |   tstg_eb_contract_balances: 100 / 100 rows generated
+2026-04-21 08:51:07,010 | INFO | CSV written: output\tstg_eb_contract_balances.csv  (100 rows, 0.06 MB)
+2026-04-21 08:51:07,010 | DEBUG | DataGenerator: table='tstg_stmt_entry' seed=1424599271 (profile=default)
+2026-04-21 08:51:11,096 | DEBUG |   tstg_stmt_entry: 1000 / 18000 rows generated
+2026-04-21 08:51:15,260 | DEBUG |   tstg_stmt_entry: 2000 / 18000 rows generated
+2026-04-21 08:51:19,376 | DEBUG |   tstg_stmt_entry: 3000 / 18000 rows generated
+2026-04-21 08:51:23,442 | DEBUG |   tstg_stmt_entry: 4000 / 18000 rows generated
+2026-04-21 08:51:27,093 | DEBUG |   tstg_stmt_entry: 5000 / 18000 rows generated
+2026-04-21 08:51:31,482 | DEBUG |   tstg_stmt_entry: 6000 / 18000 rows generated
+2026-04-21 08:51:36,384 | DEBUG |   tstg_stmt_entry: 7000 / 18000 rows generated
+2026-04-21 08:51:40,665 | DEBUG |   tstg_stmt_entry: 8000 / 18000 rows generated
+2026-04-21 08:51:44,955 | DEBUG |   tstg_stmt_entry: 9000 / 18000 rows generated
+2026-04-21 08:51:49,513 | DEBUG |   tstg_stmt_entry: 10000 / 18000 rows generated
+2026-04-21 08:51:54,290 | DEBUG |   tstg_stmt_entry: 11000 / 18000 rows generated
+2026-04-21 08:51:58,894 | DEBUG |   tstg_stmt_entry: 12000 / 18000 rows generated
+2026-04-21 08:52:03,495 | DEBUG |   tstg_stmt_entry: 13000 / 18000 rows generated
+2026-04-21 08:52:08,098 | DEBUG |   tstg_stmt_entry: 14000 / 18000 rows generated
+2026-04-21 08:52:12,737 | DEBUG |   tstg_stmt_entry: 15000 / 18000 rows generated
+2026-04-21 08:52:17,632 | DEBUG |   tstg_stmt_entry: 16000 / 18000 rows generated
+2026-04-21 08:52:22,488 | DEBUG |   tstg_stmt_entry: 17000 / 18000 rows generated
+2026-04-21 08:52:27,128 | DEBUG |   tstg_stmt_entry: 18000 / 18000 rows generated
+2026-04-21 08:52:27,223 | INFO | CSV written: output\tstg_stmt_entry.csv  (18000 rows, 17.06 MB)
+2026-04-21 08:52:27,238 | DEBUG | DataGenerator: table='tstg_pp_order_entry_details' seed=1262296606 (profile=default)
+2026-04-21 08:52:35,805 | DEBUG |   tstg_pp_order_entry_details: 1000 / 37500 rows generated
+2026-04-21 08:52:44,621 | DEBUG |   tstg_pp_order_entry_details: 2000 / 37500 rows generated
+2026-04-21 08:52:53,271 | DEBUG |   tstg_pp_order_entry_details: 3000 / 37500 rows generated
+2026-04-21 08:53:01,756 | DEBUG |   tstg_pp_order_entry_details: 4000 / 37500 rows generated
+2026-04-21 08:53:10,290 | DEBUG |   tstg_pp_order_entry_details: 5000 / 37500 rows generated
+2026-04-21 08:53:18,670 | DEBUG |   tstg_pp_order_entry_details: 6000 / 37500 rows generated
+2026-04-21 08:53:27,135 | DEBUG |   tstg_pp_order_entry_details: 7000 / 37500 rows generated
+2026-04-21 08:53:35,505 | DEBUG |   tstg_pp_order_entry_details: 8000 / 37500 rows generated
+2026-04-21 08:53:43,752 | DEBUG |   tstg_pp_order_entry_details: 9000 / 37500 rows generated
+2026-04-21 08:53:52,289 | DEBUG |   tstg_pp_order_entry_details: 10000 / 37500 rows generated
+2026-04-21 08:54:00,601 | DEBUG |   tstg_pp_order_entry_details: 11000 / 37500 rows generated
+2026-04-21 08:54:08,368 | DEBUG |   tstg_pp_order_entry_details: 12000 / 37500 rows generated
+2026-04-21 08:54:16,002 | DEBUG |   tstg_pp_order_entry_details: 13000 / 37500 rows generated
+2026-04-21 08:54:23,566 | DEBUG |   tstg_pp_order_entry_details: 14000 / 37500 rows generated
+2026-04-21 08:54:31,266 | DEBUG |   tstg_pp_order_entry_details: 15000 / 37500 rows generated
+2026-04-21 08:54:39,332 | DEBUG |   tstg_pp_order_entry_details: 16000 / 37500 rows generated
+2026-04-21 08:54:46,982 | DEBUG |   tstg_pp_order_entry_details: 17000 / 37500 rows generated
+2026-04-21 08:54:54,714 | DEBUG |   tstg_pp_order_entry_details: 18000 / 37500 rows generated
+2026-04-21 08:55:02,514 | DEBUG |   tstg_pp_order_entry_details: 19000 / 37500 rows generated
+2026-04-21 08:55:10,316 | DEBUG |   tstg_pp_order_entry_details: 20000 / 37500 rows generated
+2026-04-21 08:55:18,014 | DEBUG |   tstg_pp_order_entry_details: 21000 / 37500 rows generated
+2026-04-21 08:55:25,747 | DEBUG |   tstg_pp_order_entry_details: 22000 / 37500 rows generated
+2026-04-21 08:55:33,446 | DEBUG |   tstg_pp_order_entry_details: 23000 / 37500 rows generated
+2026-04-21 08:55:41,364 | DEBUG |   tstg_pp_order_entry_details: 24000 / 37500 rows generated
+2026-04-21 08:55:49,139 | DEBUG |   tstg_pp_order_entry_details: 25000 / 37500 rows generated
+2026-04-21 08:55:51,791 | DEBUG |   tstg_pp_order_entry_details: 26000 / 37500 rows generated
+2026-04-21 08:55:54,727 | DEBUG |   tstg_pp_order_entry_details: 27000 / 37500 rows generated
+2026-04-21 08:55:57,053 | DEBUG |   tstg_pp_order_entry_details: 28000 / 37500 rows generated
+2026-04-21 08:55:59,482 | DEBUG |   tstg_pp_order_entry_details: 29000 / 37500 rows generated
+2026-04-21 08:56:01,926 | DEBUG |   tstg_pp_order_entry_details: 30000 / 37500 rows generated
+2026-04-21 08:56:04,287 | DEBUG |   tstg_pp_order_entry_details: 31000 / 37500 rows generated
+2026-04-21 08:56:06,689 | DEBUG |   tstg_pp_order_entry_details: 32000 / 37500 rows generated
+2026-04-21 08:56:09,174 | DEBUG |   tstg_pp_order_entry_details: 33000 / 37500 rows generated
+2026-04-21 08:56:11,613 | DEBUG |   tstg_pp_order_entry_details: 34000 / 37500 rows generated
+2026-04-21 08:56:14,024 | DEBUG |   tstg_pp_order_entry_details: 35000 / 37500 rows generated
+2026-04-21 08:56:16,556 | DEBUG |   tstg_pp_order_entry_details: 36000 / 37500 rows generated
+2026-04-21 08:56:19,137 | DEBUG |   tstg_pp_order_entry_details: 37000 / 37500 rows generated
+2026-04-21 08:56:20,419 | DEBUG |   tstg_pp_order_entry_details: 37500 / 37500 rows generated
+2026-04-21 08:56:20,444 | INFO | CSV written: output\tstg_pp_order_entry_details.csv  (37500 rows, 56.90 MB)
+2026-04-21 08:56:20,444 | DEBUG | DataGenerator: table='tstg_aa_accountdetail' seed=1277604578 (profile=default)
+2026-04-21 08:56:20,801 | DEBUG |   tstg_aa_accountdetail: 450 / 450 rows generated
+2026-04-21 08:56:20,815 | INFO | CSV written: output\tstg_aa_accountdetail.csv  (450 rows, 0.30 MB)
+2026-04-21 08:56:20,817 | DEBUG | DataGenerator: table='tstg_aa_arrangement_activity' seed=2062414312 (profile=default)
+2026-04-21 08:56:21,632 | DEBUG |   tstg_aa_arrangement_activity: 1000 / 1200 rows generated
+2026-04-21 08:56:21,807 | DEBUG |   tstg_aa_arrangement_activity: 1200 / 1200 rows generated
+2026-04-21 08:56:21,823 | INFO | CSV written: output\tstg_aa_arrangement_activity.csv  (1200 rows, 0.93 MB)
+2026-04-21 08:56:21,829 | DEBUG | DataGenerator: table='tstg_aa_arrangement_details' seed=1313155677 (profile=default)
+2026-04-21 08:56:21,853 | DEBUG |   tstg_aa_arrangement_details: 150 / 150 rows generated
+2026-04-21 08:56:21,855 | INFO | CSV written: output\tstg_aa_arrangement_details.csv  (150 rows, 0.01 MB)
+2026-04-21 08:56:21,855 | INFO | Parallel generation: tstg_atm_transaction_details | 187500 rows | 188 chunks | 4 workers
+2026-04-21 08:56:33,680 | INFO | Parallel generation complete: tstg_atm_transaction_details | 187500 rows written across 188 chunks
+2026-04-21 08:56:35,664 | INFO | Merged CSV: output\tstg_atm_transaction_details.csv (35.18 MB)
+2026-04-21 08:56:36,493 | DEBUG | Registered 187500 PK values for tstg_atm_transaction_details.atm_txn_id
+2026-04-21 08:56:36,599 | DEBUG | DataGenerator: table='tstg_eb_contract_balances_details' seed=1052423502 (profile=default)
+2026-04-21 08:56:36,805 | DEBUG |   tstg_eb_contract_balances_details: 100 / 100 rows generated
+2026-04-21 08:56:36,817 | INFO | CSV written: output\tstg_eb_contract_balances_details.csv  (100 rows, 0.08 MB)
+2026-04-21 08:56:36,822 | DEBUG | DataGenerator: table='tstg_stmt_entry_details' seed=151602961 (profile=default)
+2026-04-21 08:56:37,826 | DEBUG |   tstg_stmt_entry_details: 1000 / 18000 rows generated
+2026-04-21 08:56:38,626 | DEBUG |   tstg_stmt_entry_details: 2000 / 18000 rows generated
+2026-04-21 08:56:39,263 | DEBUG |   tstg_stmt_entry_details: 3000 / 18000 rows generated
+2026-04-21 08:56:39,954 | DEBUG |   tstg_stmt_entry_details: 4000 / 18000 rows generated
+2026-04-21 08:56:40,623 | DEBUG |   tstg_stmt_entry_details: 5000 / 18000 rows generated
+2026-04-21 08:56:41,277 | DEBUG |   tstg_stmt_entry_details: 6000 / 18000 rows generated
+2026-04-21 08:56:41,944 | DEBUG |   tstg_stmt_entry_details: 7000 / 18000 rows generated
+2026-04-21 08:56:42,658 | DEBUG |   tstg_stmt_entry_details: 8000 / 18000 rows generated
+2026-04-21 08:56:43,380 | DEBUG |   tstg_stmt_entry_details: 9000 / 18000 rows generated
+2026-04-21 08:56:44,282 | DEBUG |   tstg_stmt_entry_details: 10000 / 18000 rows generated
+2026-04-21 08:56:45,058 | DEBUG |   tstg_stmt_entry_details: 11000 / 18000 rows generated
+2026-04-21 08:56:45,946 | DEBUG |   tstg_stmt_entry_details: 12000 / 18000 rows generated
+2026-04-21 08:56:46,747 | DEBUG |   tstg_stmt_entry_details: 13000 / 18000 rows generated
+2026-04-21 08:56:47,501 | DEBUG |   tstg_stmt_entry_details: 14000 / 18000 rows generated
+2026-04-21 08:56:48,288 | DEBUG |   tstg_stmt_entry_details: 15000 / 18000 rows generated
+2026-04-21 08:56:49,213 | DEBUG |   tstg_stmt_entry_details: 16000 / 18000 rows generated
+2026-04-21 08:56:50,184 | DEBUG |   tstg_stmt_entry_details: 17000 / 18000 rows generated
+2026-04-21 08:56:51,078 | DEBUG |   tstg_stmt_entry_details: 18000 / 18000 rows generated
+2026-04-21 08:56:51,101 | INFO | CSV written: output\tstg_stmt_entry_details.csv  (18000 rows, 9.14 MB)
+2026-04-21 08:56:51,103 | DEBUG | DataGenerator: table='tstg_aa_accountdetail_details' seed=15051902 (profile=default)
+2026-04-21 08:56:52,002 | DEBUG |   tstg_aa_accountdetail_details: 450 / 450 rows generated
+2026-04-21 08:56:52,037 | INFO | CSV written: output\tstg_aa_accountdetail_details.csv  (450 rows, 0.53 MB)
+2026-04-21 08:56:52,037 | DEBUG | DataGenerator: table='tstg_aa_arrangement_activity_details' seed=1625906462 (profile=default)
+2026-04-21 08:56:53,159 | DEBUG |   tstg_aa_arrangement_activity_details: 1000 / 1200 rows generated
+2026-04-21 08:56:53,385 | DEBUG |   tstg_aa_arrangement_activity_details: 1200 / 1200 rows generated
+2026-04-21 08:56:53,387 | INFO | CSV written: output\tstg_aa_arrangement_activity_details.csv  (1200 rows, 0.84 MB)
+2026-04-21 08:56:53,395 | INFO | Seed profile 'default' registered: run_id=20260421_084217

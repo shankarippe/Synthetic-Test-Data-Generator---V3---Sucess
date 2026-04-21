@@ -1,0 +1,51 @@
+PS C:\Users\shankar.ippe\OneDrive - Lera Technologies Pvt Ltd\Desktop\ADP\Data_Generator> python auto_pipeline.py --config config.yaml --groq-key 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 --dry-run
+
+=================================================================
+  Synthetic Data Framework — Fully Automated Pipeline
+  Powered by LangGraph + LangChain + Groq (Llama 3.3 70B)
+=================================================================
+
+  Database : localhost:5432/DatagenDB
+  Schema   : banking
+
+  LLM      : Groq / llama-3.3-70b-versatile
+  Starting automated pipeline...
+
+C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\__init__.py:113: RequestsDependencyWarning: urllib3 (2.6.3) or chardet (6.0.0.post1)/charset_normalizer (3.4.4) doesn't match a supported version!
+  warnings.warn(
+
+[Node 1/7] Reading schema from PostgreSQL...
+
+[ERROR] Pipeline failed: 'database'
+Traceback (most recent call last):
+  File "C:\Users\shankar.ippe\OneDrive - Lera Technologies Pvt Ltd\Desktop\ADP\Data_Generator\auto_pipeline.py", line 137, in main
+    final_state = graph.invoke(initial_state)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\main.py", line 3296, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\main.py", line 2727, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\_runner.py", line 167, in tick
+    run_with_retry(
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\_retry.py", line 96, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\_internal\_runnable.py", line 656, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\_internal\_runnable.py", line 400, in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\OneDrive - Lera Technologies Pvt Ltd\Desktop\ADP\Data_Generator\Intelligence\graph.py", line 35, in schema_reader
+    def schema_reader(state):     return schema_reader_node(state, llm_client)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\OneDrive - Lera Technologies Pvt Ltd\Desktop\ADP\Data_Generator\Intelligence\nodes.py", line 47, in schema_reader_node
+    reader = DBMetadataReader(config, _silent_loggers())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\OneDrive - Lera Technologies Pvt Ltd\Desktop\ADP\Data_Generator\db_metadata_reader.py", line 73, in __init__
+    self.db_cfg = config["database"]
+                  ~~~~~~^^^^^^^^^^^^
+KeyError: 'database'
+During task with name 'schema_reader' and id '4f57bef0-56f8-d4d3-dafb-94cf7450e9a3'

@@ -1,0 +1,79 @@
+PS C:\Users\shankar.ippe\OneDrive - Lera Technologies Pvt Ltd\Desktop\ADP\Data_Generator> python auto_pipeline.py --config config.yaml --groq-key xxx --dry-run
+
+=================================================================
+  Synthetic Data Framework — Fully Automated Pipeline
+  Powered by LangGraph + LangChain + Groq (Llama 3.3 70B)
+=================================================================
+
+
+  Database : localhost:5432/DatagenDB
+  Schema   : banking
+
+  LLM      : Groq / llama-3.3-70b-versatile
+  Starting automated pipeline...
+
+C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\__init__.py:113: RequestsDependencyWarning: urllib3 (2.6.3) or chardet (6.0.0.post1)/charset_normalizer (3.4.4) doesn't match a supported version!
+  warnings.warn(
+
+[Node 1/7] Reading schema from PostgreSQL...
+  [Pipeline] Schema read: 52 tables discovered
+
+[Node 2/7] Detecting business domain from schema...
+
+[ERROR] Pipeline failed: Error code: 401 - {'error': {'message': 'Invalid API Key', 'type': 'invalid_request_error', 'code': 'invalid_api_key'}}
+Traceback (most recent call last):
+  File "C:\Users\shankar.ippe\OneDrive - Lera Technologies Pvt Ltd\Desktop\ADP\Data_Generator\auto_pipeline.py", line 137, in main
+    final_state = graph.invoke(initial_state)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\main.py", line 3296, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\main.py", line 2727, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\_runner.py", line 167, in tick
+    run_with_retry(
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\_retry.py", line 96, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\_internal\_runnable.py", line 656, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\_internal\_runnable.py", line 400, in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\OneDrive - Lera Technologies Pvt Ltd\Desktop\ADP\Data_Generator\Intelligence\graph.py", line 36, in domain_detector
+    def domain_detector(state):   return domain_detector_node(state, llm_client)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\OneDrive - Lera Technologies Pvt Ltd\Desktop\ADP\Data_Generator\Intelligence\nodes.py", line 111, in domain_detector_node        
+    result = llm_client.ask_json(system_prompt, user_prompt)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\OneDrive - Lera Technologies Pvt Ltd\Desktop\ADP\Data_Generator\Intelligence\llm_client.py", line 57, in ask_json
+    raw = self.ask(full_system, user_prompt)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\OneDrive - Lera Technologies Pvt Ltd\Desktop\ADP\Data_Generator\Intelligence\llm_client.py", line 40, in ask
+    response: Any = self.llm.invoke(messages)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 454, in invoke    
+    self.generate_prompt(
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1185, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 995, in generate  
+    self._generate_with_cache(
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1297, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_groq\chat_models.py", line 621, in _generate
+    response = self.client.create(messages=message_dicts, **params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\groq\resources\chat\completions.py", line 461, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\groq\_base_client.py", line 1242, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shankar.ippe\AppData\Local\Programs\Python\Python312\Lib\site-packages\groq\_base_client.py", line 1044, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.AuthenticationError: Error code: 401 - {'error': {'message': 'Invalid API Key', 'type': 'invalid_request_error', 'code': 'invalid_api_key'}}
+During task with name 'domain_detector' and id '788aefc9-a700-faeb-6cec-fe49e222ba45'
